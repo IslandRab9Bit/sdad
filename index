@@ -18,11 +18,8 @@
     </div>
     </div>
 
-    <div class="container-body-table" style="display: block;"><!--table -->
-   
-    
-    <td>
-      <div class="col-md-6" style="background-color: coral;"><!--DCS -->
+ <div class="d-inline-block">
+      <div class="col-md-6" style="background-color: coral;"><!-- DCS -->
     <img src="https://www.newera.edu.my/assets/images/bse.jpg" alt="guy" class="img-fluid">
       <h4>Bachelor of Computer Science (Hons) in Software Engineering </h4><!--programe title -->
       <small>(R/481/6/0727) (16.12.2020-15.12.2025)</small><br>
@@ -32,7 +29,7 @@
         <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#BCS" aria-expanded="true" aria-controls="BCS">
           Courses Details
         </button>
-      </p>
+      </p><!--end collapse courses  button--> 
       <div class="BCS" id="BCS" style="background-color:white;">
       <div class="col-xs-12">
         <div class="card card-body">
@@ -178,9 +175,16 @@
 </div><!--end collapase Minimum Entry Requirement-->
 
 
-    <p class="mbr-section-subtitle lead description-title"><strong>Career Prospects</strong></p>
-                                        <div class="row">
+<div class="accordion" id="accordionBCS4"><!--collapase Career Prospects-->
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingBCSFour">  
+       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#BCSfour" aria-expanded="false" aria-controls="#BCSfour">
+        Career Prospects
+    </button>
+  </h2>
+                                        <div class="row" id="BCSfour">
                                             <div class="col-md-12"><ul type="disc">
+  <br>
   <li>Software Engineer</li>
   <li>Software Developer</li>
   <li>System Analyst</li>
@@ -199,7 +203,7 @@
 </ul></div>
                                         </div>
                                     </div>
-                                </div>
+                                </div><!--end collapase Career Prospects-->
                             </div>
 
                         </div>
@@ -212,6 +216,10 @@
 
    
     </div>
+  <!--end DCS table-->
+  
+</div>
+</div>
 
 
   </body>
