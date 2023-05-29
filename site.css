@@ -1,8 +1,14 @@
 button::after {
 	position: absolute;
-	z-index: 100;
+	z-index: 1;
 	right: 16px;
   }
+
+  .accordion-button:not(.collapsed) {
+    background-color: transparent;
+  }
+
+
 
 .container { 
   height: 200px;
