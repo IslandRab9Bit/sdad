@@ -1,3 +1,9 @@
+button::after {
+	position: absolute;
+	z-index: 100;
+	right: 16px;
+  }
+
 .container { 
   height: 200px;
   position: relative; 
@@ -11,3 +17,4 @@
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+
