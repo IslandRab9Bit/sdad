@@ -1,0 +1,167 @@
+<html>
+
+<head>
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+        <script src="/path/to/cdn/jquery.min.js"></script>
+<script src="/path/to/jQuery.print.js"></script> 
+    <script type="text/javascript">
+
+        // Open a WebSQL database
+        var db = openDatabase("mydb", "1.0", "My Database", 2 * 1024 * 1024);
+
+        // Retrieve the user details from localStorage
+        var userDetails = JSON.parse(localStorage.getItem("userDetails"));
+
+        // Create a table for expenses if it doesn't exist
+        db.transaction(function (tx) {
+            tx.executeSql("CREATE TABLE IF NOT EXISTS expenses (id INTEGER PRIMARY KEY AUTOINCREMENT, necessity REAL, financial_freedom REAL, education REAL, long_term_saving REAL, entertainment REAL,GiveAccount REAL)");
+        });
+
+        if (userDetails) {
+            // Access the user details and display them on the dashboard page
+            document.getElementById("welcome-message").innerHTML = "Welcome, " + userDetails.username + "!";
+        } else {
+            // Redirect to the login page if user details are not available
+            window.location.href = "login.html";
+        }
+
+        // Function to handle the expense submission
+        function submitExpense() {
+            var cost = parseFloat(document.getElementById("expense-cost").value);
+
+            // Calculate the amounts for different accounts
+            var necessityAmount = (cost * 0.55).toFixed(3);
+
+            var financialFreedomAmount = (cost * 0.10).toFixed(3);
+            var educationAmount = (cost * 0.10).toFixed(3);
+            var longTermSavingAmount = (cost * 0.10).toFixed(3);
+            var entertainmentAmount = (cost * 0.10).toFixed(3);
+            var GiveAccount = (cost * 0.05).toFixed(3);
+
+            // Save the expense data in WebSQL
+            db.transaction(function (tx) {
+                tx.executeSql("INSERT INTO expenses (necessity, financial_freedom, education, long_term_saving, entertainment,GiveAccount) VALUES (?, ?, ?, ?, ?,?)", [necessityAmount, financialFreedomAmount, educationAmount, longTermSavingAmount, entertainmentAmount, GiveAccount], function (tx, result) {
+                    // Call a function to update the expense table
+                    updateExpenseTable();
+
+                    // Reset the form
+                    document.getElementById("expense-form").reset();
+                });
+            });
+        }
+
+        // Function to update the expense table with data from WebSQL
+        function updateExpenseTable() {
+            db.transaction(function (tx) {
+                tx.executeSql("SELECT * FROM expenses", [], function (tx, result) {
+                    var tableBody = document.getElementById("expense-table-body");
+                    tableBody.innerHTML = ""; // Clear the table body
+
+                    // Iterate over the result rows and create table rows
+                    for (var i = 0; i < result.rows.length; i++) {
+                        var row = result.rows.item(i);
+                        var newRow = document.createElement("tr");
+                        newRow.innerHTML = "<td>" + row.necessity + "</td><td>" + row.financial_freedom + "</td><td>" + row.education + "</td><td>" + row.long_term_saving + "</td><td>" + row.entertainment + "</td>" + row.GiveAccount + "</td>";
+                        tableBody.appendChild(newRow);
+                    }
+                });
+            });
+        }
+
+    </script>
+
+</head>
+
+<body>
+    <!-- Show welcome message -->
+
+    <h1 id="welcome-message"></h1>
+    <div id="dashboard-content">
+        <p>Welcome to your dashboard, <span id="username-placeholder"></span>!</p>
+        <p>Current month and year: <span id="current-month"></span>,<span id="current-year"></span></p>
+
+    </div>
+    <div class="container-fluid">
+        <h2>Your Expense </h2>
+        <form id="expense-form" onsubmit="event.preventDefault(); submitExpense()">
+            <div class="mb-3">
+                <label for="expense-cost">Cost:</label>
+            </div>
+            <div class="mb-3">
+                <input type="number" id="expense-cost" step="0.01" required>
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+    <div>
+        <!-- table start -->
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Necessity Account</th>
+                    <th>Financial Freedom Account</th>
+                    <th>Education Account</th>
+                    <th>Long Term Saving Account</th>
+                    <th>Entertainment Account</th>
+                    <th>Give Account</th>
+                </tr>
+            </thead>
+            <tbody id="expense-table-body">
+                <!-- Expense table rows will be dynamically added here -->
+            </tbody>
+        </table>
+        <div>
+       
+    </div>
+    </div>
+    <button class="btn btn-primary" onclick="window.print()">Print this page</button>
+    <!-- table end -->
+    
+    <script type="text/javascript">
+        // Update the username placeholder with the actual username
+        document.getElementById("username-placeholder").innerHTML = userDetails.username;
+    </script>
+
+    <script type="text/javascript">
+        function updateMonthAndYear() {
+            var now = new Date();
+           
+            var month = now.toLocaleString('default', { month: 'long' });
+            var year = now.getFullYear();
+
+            // Update the month and year elements with the current values
+            document.getElementById("current-month").innerHTML = month;
+            document.getElementById("current-year").innerHTML = year;
+        }
+
+        // Call updateMonthAndYear() initially to set the month and year
+        updateMonthAndYear();
+    </script>
+
+    <script type="text/javascript">
+        // Call the function to update the expense table initially
+        updateExpenseTable();
+    </script>
+
+    <script type="text/javascript">
+        // delete all the expense data from WebSQL
+        reset.setonclicklistener(function () {
+            db.transaction(function (tx) {
+                tx.executeSql("DELETE FROM expenses", [], function (tx, result) {
+                    updateExpenseTable();
+                });
+            });
+        });
+    </script>
+  
+    
+
+</body>
+
+</html>
